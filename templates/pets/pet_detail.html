@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ pet.name }} ({{ pet.breed }}) | PetFinder{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'pet_list' %}">Pets</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ pet.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4 mb-5">
+        <!-- Left Column: Pet Image Card -->
+        <div class="col-12 col-lg-6">
+            <div class="card border-0 rounded-4 shadow-sm overflow-hidden sticky-lg-top" style="top: 90px;">
+                <div class="position-relative" style="padding-top: 75%; background-color: #f1f5f9;">
+                    {% if pet.image %}
+                        <img src="{{ pet.image.url }}" alt="{{ pet.name }}" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover">
+                    {% else %}
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center text-secondary">
+                            <i class="bi bi-image fs-1"></i>
+                        </div>
+                    {% endif %}
+
+                    <!-- Status badge on image -->
+                    <span class="position-absolute top-0 start-0 m-3 badge {% if pet.status == 'Available' %}badge-available{% else %}badge-adopted{% endif %} px-3 py-2 rounded-pill fs-6">
+                        {{ pet.status }}
+                    </span>
+                </div>
+
+                <!-- Card Footer Actions -->
+                <div class="p-3 bg-white d-flex justify-content-between align-items-center">
+                    <span class="text-muted small">
+                        <i class="bi bi-calendar3 me-1"></i> Added on {{ pet.created_at|date:"M d, Y" }}
+                    </span>
+                    {% if user.is_authenticated %}
+                    <form action="{% url 'toggle_favorite' pet.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                            {% if is_favorited %}
+                                <i class="bi bi-heart-fill me-1"></i> Favorited
+                            {% else %}
+                                <i class="bi bi-heart me-1"></i> Add to Favorites
+                            {% endif %}
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Pet Details & Application Box -->
+        <div class="col-12 col-lg-6">
+            <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1">
+                        {{ pet.animal_type }}
+                    </span>
+                    <span class="text-muted small">
+                        <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ pet.location }}
+                    </span>
+                </div>
+
+                <h1 class="display-5 fw-bold mb-1">{{ pet.name }}</h1>
+                <p class="text-muted fs-5 mb-4">{{ pet.breed }}</p>
+
+                <!-- Key Attributes Grid -->
+                <div class="row g-3 mb-4">
+                    <div class="col-4">
+                        <div class="p-3 bg-light rounded-3 text-center">
+                            <div class="small text-muted mb-1"><i class="bi bi-hourglass-split"></i> Age</div>
+                            <div class="fw-bold">{{ pet.age_display }}</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-3 bg-light rounded-3 text-center">
+                            <div class="small text-muted mb-1"><i class="bi bi-gender-ambiguous"></i> Gender</div>
+                            <div class="fw-bold">{{ pet.gender }}</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-3 bg-light rounded-3 text-center">
+                            <div class="small text-muted mb-1"><i class="bi bi-shield-check"></i> Status</div>
+                            <div class="fw-bold {% if pet.status == 'Available' %}text-success{% else %}text-danger{% endif %}">
+                                {{ pet.status }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Description -->
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-2">About {{ pet.name }}</h5>
+                    <p class="text-secondary leading-relaxed mb-0" style="white-space: pre-line;">
+                        {{ pet.description }}
+                    </p>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- Adoption Action Section -->
+                <div>
+                    {% if pet.status == 'Adopted' %}
+                        <!-- Adopted notice -->
+                        <div class="alert alert-secondary border-0 p-3 rounded-3 d-flex align-items-center gap-3">
+                            <i class="bi bi-x-circle-fill text-danger fs-3"></i>
+                            <div>
+                                <h6 class="fw-bold mb-1 text-danger">This pet has already been adopted.</h6>
+                                <p class="small text-muted mb-0">
+                                    {{ pet.name }} has already found a loving forever home! Feel free to browse our other available pets.
+                                </p>
+                            </div>
+                        </div>
+                        <a href="{% url 'pet_list' %}?status=Available" class="btn btn-outline-primary w-100 rounded-pill py-2">
+                            Browse Other Available Pets
+                        </a>
+
+                    {% elif has_pending_request %}
+                        <!-- Already applied notice -->
+                        <div class="alert alert-warning border-0 p-3 rounded-3 d-flex align-items-center gap-3">
+                            <i class="bi bi-info-circle-fill text-warning-emphasis fs-3"></i>
+                            <div>
+                                <h6 class="fw-bold mb-1">Application Pending</h6>
+                                <p class="small text-muted mb-0">
+                                    You already have an active adoption application for {{ pet.name }}. Please check your dashboard for updates.
+                                </p>
+                            </div>
+                        </div>
+                        <a href="{% url 'user_dashboard' %}" class="btn btn-primary w-100 rounded-pill py-2">
+                            Go to My Dashboard
+                        </a>
+
+                    {% elif user.is_authenticated %}
+                        <!-- Available to apply -->
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'apply_adoption' pet.id %}" class="btn btn-primary btn-lg rounded-pill shadow-sm">
+                                <i class="bi bi-heart-fill me-2"></i> Apply for Adoption
+                            </a>
+                        </div>
+                        <p class="small text-muted text-center mt-2 mb-0">
+                            Submitting an application is free and does not obligate you to adopt.
+                        </p>
+
+                    {% else %}
+                        <!-- Guest user notice -->
+                        <div class="card bg-light border-0 p-3 rounded-3 text-center">
+                            <p class="text-muted small mb-2">You must be logged in to apply for adoption.</p>
+                            <a href="{% url 'login' %}?next={% url 'apply_adoption' pet.id %}" class="btn btn-primary rounded-pill">
+                                Log in to Apply for {{ pet.name }}
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Dashboard | PetFinder{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- Dashboard Header -->
+    <div class="card border-0 bg-white rounded-4 shadow-sm p-4 mb-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center fs-2" style="width: 64px; height: 64px;">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold mb-0">Hello, {{ user.first_name|default:user.username }}!</h3>
+                    <p class="text-muted small mb-0">Manage your pet adoption applications and tracked favorites</p>
+                </div>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{% url 'pet_list' %}" class="btn btn-outline-primary rounded-pill px-3 btn-sm">
+                    <i class="bi bi-search me-1"></i> Browse More Pets
+                </a>
+                <a href="{% url 'user_profile' %}" class="btn btn-light rounded-pill px-3 btn-sm border">
+                    <i class="bi bi-gear me-1"></i> Account Settings
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <ul class="nav nav-pills mb-4 gap-2" id="dashboardTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active rounded-pill px-4" id="applications-tab" data-bs-toggle="pill" data-bs-target="#applications" type="button" role="tab" aria-controls="applications" aria-selected="true">
+                <i class="bi bi-clipboard2-check me-2"></i>My Adoption Requests
+                <span class="badge bg-white text-primary ms-1 rounded-pill">{{ adoption_requests.count }}</span>
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link rounded-pill px-4" id="favorites-tab" data-bs-toggle="pill" data-bs-target="#favorites" type="button" role="tab" aria-controls="favorites" aria-selected="false">
+                <i class="bi bi-heart-fill text-danger me-2"></i>My Favorites
+                <span class="badge bg-secondary ms-1 rounded-pill">{{ favorites.count }}</span>
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab Contents -->
+    <div class="tab-content" id="dashboardTabContent">
+
+        <!-- Adoption Requests Tab -->
+        <div class="tab-pane fade show active" id="applications" role="tabpanel" aria-labelledby="applications-tab">
+            <div class="card border-0 bg-white rounded-4 shadow-sm overflow-hidden mb-5">
+                <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0">Adoption Applications</h5>
+                    <span class="text-muted small">Updated in real-time</span>
+                </div>
+
+                {% if adoption_requests %}
+                    <!-- Responsive Table for Tablet/Desktop -->
+                    <div class="table-responsive d-none d-md-block">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light text-muted small text-uppercase">
+                                <tr>
+                                    <th scope="col" class="ps-4">Pet</th>
+                                    <th scope="col">Application Date</th>
+                                    <th scope="col">Contact Phone</th>
+                                    <th scope="col">Experience</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col" class="text-end pe-4">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for req in adoption_requests %}
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div style="width: 48px; height: 48px;" class="rounded-3 overflow-hidden bg-light flex-shrink-0">
+                                                {% if req.pet.image %}
+                                                    <img src="{{ req.pet.image.url }}" alt="{{ req.pet.name }}" class="w-100 h-100 object-fit-cover">
+                                                {% else %}
+                                                    <div class="w-100 h-100 d-flex align-items-center justify-content-center text-muted">
+                                                        <i class="bi bi-image"></i>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <div>
+                                                <a href="{% url 'pet_detail' req.pet.id %}" class="fw-bold text-dark text-decoration-none d-block">
+                                                    {{ req.pet.name }}
+                                                </a>
+                                                <span class="text-muted small">{{ req.pet.animal_type }} &bull; {{ req.pet.breed }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="small fw-medium">{{ req.created_at|date:"d M, Y" }}</div>
+                                        <div class="text-muted smaller">{{ req.created_at|date:"h:i A" }}</div>
+                                    </td>
+                                    <td class="small">{{ req.phone }}</td>
+                                    <td>
+                                        {% if req.previous_pet_experience %}
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">Yes</span>
+                                        {% else %}
+                                            <span class="badge bg-light text-muted border rounded-pill">No</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if req.status == 'Pending' %}
+                                            <span class="badge badge-pending px-3 py-2 rounded-pill fw-semibold">
+                                                <i class="bi bi-hourglass-split me-1"></i> Pending
+                                            </span>
+                                        {% elif req.status == 'Approved' %}
+                                            <span class="badge badge-approved px-3 py-2 rounded-pill fw-semibold">
+                                                <i class="bi bi-check-circle-fill me-1"></i> Approved
+                                            </span>
+                                        {% else %}
+                                            <span class="badge badge-rejected px-3 py-2 rounded-pill fw-semibold">
+                                                <i class="bi bi-x-circle-fill me-1"></i> Rejected
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <a href="{% url 'pet_detail' req.pet.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                                            View Pet
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Mobile Card View -->
+                    <div class="d-md-none p-3 d-flex flex-column gap-3">
+                        {% for req in adoption_requests %}
+                        <div class="card border rounded-3 p-3 shadow-none">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="text-muted small">{{ req.created_at|date:"d M, Y" }}</span>
+                                {% if req.status == 'Pending' %}
+                                    <span class="badge badge-pending px-2 py-1 rounded-pill small">Pending</span>
+                                {% elif req.status == 'Approved' %}
+                                    <span class="badge badge-approved px-2 py-1 rounded-pill small">Approved</span>
+                                {% else %}
+                                    <span class="badge badge-rejected px-2 py-1 rounded-pill small">Rejected</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <div style="width: 50px; height: 50px;" class="rounded-3 overflow-hidden bg-light flex-shrink-0">
+                                    {% if req.pet.image %}
+                                        <img src="{{ req.pet.image.url }}" alt="{{ req.pet.name }}" class="w-100 h-100 object-fit-cover">
+                                    {% else %}
+                                        <div class="w-100 h-100 d-flex align-items-center justify-content-center text-muted">
+                                            <i class="bi bi-image"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-0">{{ req.pet.name }}</h6>
+                                    <span class="text-muted small">{{ req.pet.animal_type }} &bull; {{ req.pet.breed }}</span>
+                                </div>
+                            </div>
+
+                            <div class="small text-secondary mb-3">
+                                <div><strong>Phone:</strong> {{ req.phone }}</div>
+                                <div class="mt-1"><strong>Reason:</strong> {{ req.reason|truncatewords:15 }}</div>
+                            </div>
+
+                            <a href="{% url 'pet_detail' req.pet.id %}" class="btn btn-outline-primary btn-sm rounded-pill w-100">
+                                View Pet Details
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                {% else %}
+                    <!-- Empty State -->
+                    <div class="text-center py-5 p-4">
+                        <i class="bi bi-folder2-open fs-1 text-muted"></i>
+                        <h5 class="fw-bold mt-2">No Adoption Applications Yet</h5>
+                        <p class="text-muted small">You haven't submitted any adoption requests so far.</p>
+                        <a href="{% url 'pet_list' %}" class="btn btn-primary rounded-pill px-4 mt-2">
+                            Explore Pets &amp; Apply
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Favorites Tab -->
+        <div class="tab-pane fade" id="favorites" role="tabpanel" aria-labelledby="favorites-tab">
+            <div class="card border-0 bg-white rounded-4 shadow-sm p-4 mb-5">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-bold mb-0">Saved Pets</h5>
+                    <span class="text-muted small">{{ favorites.count }} saved</span>
+                </div>
+
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+                    {% for fav in favorites %}
+                    <div class="col">
+                        <div class="pet-card">
+                            <div class="pet-card-img-wrapper">
+                                {% if fav.pet.image %}
+                                    <img src="{{ fav.pet.image.url }}" alt="{{ fav.pet.name }}">
+                                {% else %}
+                                    <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-secondary text-white">
+                                        <i class="bi bi-image fs-1"></i>
+                                    </div>
+                                {% endif %}
+                                <span class="pet-badge-status badge {% if fav.pet.status == 'Available' %}badge-available{% else %}badge-adopted{% endif %}">
+                                    {{ fav.pet.status }}
+                                </span>
+                            </div>
+                            <div class="p-3">
+                                <h5 class="fw-bold mb-1">{{ fav.pet.name }}</h5>
+                                <p class="text-muted small mb-3">{{ fav.pet.breed }} &bull; {{ fav.pet.location }}</p>
+                                <div class="d-flex gap-2">
+                                    <a href="{% url 'pet_detail' fav.pet.id %}" class="btn btn-outline-primary btn-sm rounded-pill flex-grow-1">
+                                        View Details
+                                    </a>
+                                    <form action="{% url 'toggle_favorite' fav.pet.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-danger btn-sm rounded-circle" title="Remove from favorites">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-heart fs-1 text-muted"></i>
+                        <h5 class="mt-2 text-muted">No favorite pets yet</h5>
+                        <p class="small text-muted">Click the heart icon on any pet card to save them here.</p>
+                        <a href="{% url 'pet_list' %}" class="btn btn-primary rounded-pill px-4">
+                            Browse Pets
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

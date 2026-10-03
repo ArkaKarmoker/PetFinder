@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Apply for Adoption - {{ pet.name }} | PetFinder{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'pet_list' %}">Pets</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'pet_detail' pet.id %}">{{ pet.name }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Adoption Application</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+            <!-- Pet Summary Card -->
+            <div class="card border-0 bg-white rounded-4 shadow-sm p-3 mb-4">
+                <div class="d-flex align-items-center gap-3">
+                    <div style="width: 80px; height: 80px; flex-shrink: 0;" class="rounded-3 overflow-hidden bg-light">
+                        {% if pet.image %}
+                            <img src="{{ pet.image.url }}" alt="{{ pet.name }}" class="w-100 h-100 object-fit-cover">
+                        {% else %}
+                            <div class="w-100 h-100 d-flex align-items-center justify-content-center text-muted">
+                                <i class="bi bi-image"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-1">Adopting {{ pet.name }}</h5>
+                        <div class="text-muted small">
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle me-1">{{ pet.animal_type }}</span>
+                            {{ pet.breed }} &bull; {{ pet.gender }} &bull; {{ pet.location }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Application Form -->
+            <div class="card border-0 bg-white rounded-4 shadow-sm p-4 p-md-5 mb-5">
+                <div class="mb-4">
+                    <h3 class="fw-bold mb-1">Adoption Application</h3>
+                    <p class="text-muted small mb-0">Please share your contact details and background so we can ensure the best match.</p>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <!-- Read-only Applicant Information -->
+                    <div class="row g-3 mb-4 p-3 bg-light rounded-3">
+                        <div class="col-12 col-sm-6">
+                            <label class="form-label small text-muted mb-0">Applicant Name</label>
+                            <div class="fw-semibold">{{ user.get_full_name|default:user.username }}</div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label class="form-label small text-muted mb-0">Email Address</label>
+                            <div class="fw-semibold">{{ user.email|default:"Not provided" }}</div>
+                        </div>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="mb-3">
+                        <label for="{{ form.phone.id_for_label }}" class="form-label fw-semibold">
+                            Phone Number <span class="text-danger">*</span>
+                        </label>
+                        {{ form.phone }}
+                        {% if form.phone.errors %}
+                            <div class="text-danger small mt-1">{{ form.phone.errors.0 }}</div>
+                        {% endif %}
+                        <div class="form-text">We will contact you via this phone number regarding your application.</div>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="mb-3">
+                        <label for="{{ form.address.id_for_label }}" class="form-label fw-semibold">
+                            Home Address <span class="text-danger">*</span>
+                        </label>
+                        {{ form.address }}
+                        {% if form.address.errors %}
+                            <div class="text-danger small mt-1">{{ form.address.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Reason for Adoption -->
+                    <div class="mb-3">
+                        <label for="{{ form.reason.id_for_label }}" class="form-label fw-semibold">
+                            Why do you want this pet? <span class="text-danger">*</span>
+                        </label>
+                        {{ form.reason }}
+                        {% if form.reason.errors %}
+                            <div class="text-danger small mt-1">{{ form.reason.errors.0 }}</div>
+                        {% endif %}
+                        <div class="form-text">Tell us about your home environment, schedule, and why you feel {{ pet.name }} is a good fit.</div>
+                    </div>
+
+                    <!-- Previous Pet Experience -->
+                    <div class="mb-3">
+                        <div class="form-check p-3 bg-light rounded-3">
+                            {{ form.previous_pet_experience }}
+                            <label class="form-check-label fw-semibold ms-2" for="{{ form.previous_pet_experience.id_for_label }}">
+                                Have you owned or cared for a pet before?
+                            </label>
+                        </div>
+                        {% if form.previous_pet_experience.errors %}
+                            <div class="text-danger small mt-1">{{ form.previous_pet_experience.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Additional Message -->
+                    <div class="mb-4">
+                        <label for="{{ form.message.id_for_label }}" class="form-label fw-semibold">
+                            Additional Message <span class="text-muted fw-normal">(Optional)</span>
+                        </label>
+                        {{ form.message }}
+                        {% if form.message.errors %}
+                            <div class="text-danger small mt-1">{{ form.message.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Submit Buttons -->
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <a href="{% url 'pet_detail' pet.id %}" class="btn btn-outline-secondary rounded-pill px-4">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary rounded-pill px-5 py-2 shadow-sm">
+                            <i class="bi bi-send-check me-2"></i> Submit Application
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
