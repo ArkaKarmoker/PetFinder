@@ -457,3 +457,60 @@ class SwaggerAndFilterTests(TestCase):
         self.assertEqual(empty_res.status_code, 200)
         self.assertNotContains(empty_res, "Rocky")
 
+
+class UserPasswordChangeTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(
+            username="testuser",
+            password="OldPassword123!",
+            email="testuser@example.com"
+        )
+
+    def test_password_change_requires_login(self):
+        response = self.client.get(reverse('change_password'))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/login/', response.url)
+
+    def test_password_change_get_authenticated(self):
+        self.client.login(username="testuser", password="OldPassword123!")
+        response = self.client.get(reverse('change_password'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'pets/change_password.html')
+
+    def test_password_change_success(self):
+        self.client.login(username="testuser", password="OldPassword123!")
+        response = self.client.post(reverse('change_password'), {
+            'old_password': 'OldPassword123!',
+            'new_password1': 'NewValidPassword123@',
+            'new_password2': 'NewValidPassword123@',
+        }, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse('user_profile'))
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password('NewValidPassword123@'))
+        # User remains logged in
+        self.assertIn('_auth_user_id', self.client.session)
+
+    def test_password_change_invalid_old_password(self):
+        self.client.login(username="testuser", password="OldPassword123!")
+        response = self.client.post(reverse('change_password'), {
+            'old_password': 'WrongPassword999',
+            'new_password1': 'NewValidPassword123@',
+            'new_password2': 'NewValidPassword123@',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password('OldPassword123!'))
+
+    def test_password_change_mismatched_new_passwords(self):
+        self.client.login(username="testuser", password="OldPassword123!")
+        response = self.client.post(reverse('change_password'), {
+            'old_password': 'OldPassword123!',
+            'new_password1': 'NewValidPassword123@',
+            'new_password2': 'CompletelyDifferentPassword123@',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password('OldPassword123!'))
+

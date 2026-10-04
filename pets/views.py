@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.http import JsonResponse
 from .models import Pet, AdoptionRequest, Favorite
-from .forms import UserRegisterForm, UserProfileForm, AdoptionRequestForm
+from .forms import UserRegisterForm, UserProfileForm, UserPasswordChangeForm, AdoptionRequestForm
 
 # Create your views here.
 
@@ -206,6 +206,21 @@ def user_profile(request):
         'form': form,
     }
     return render(request, 'pets/profile.html', context)
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = UserPasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, "Your password has been changed successfully!")
+            return redirect('user_profile')
+    else:
+        form = UserPasswordChangeForm(user=request.user)
+
+    return render(request, 'pets/change_password.html', {'form': form})
 
 
 def user_register(request):

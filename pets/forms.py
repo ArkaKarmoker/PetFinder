@@ -1,27 +1,28 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 from .models import AdoptionRequest, Pet
 
 
 class UserRegisterForm(forms.ModelForm):
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter password'}),
+        widget=forms.PasswordInput(attrs={'class': 'form-control bg-light', 'placeholder': 'Enter password'}),
         min_length=6
     )
     password_confirm = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm password'}),
+        widget=forms.PasswordInput(attrs={'class': 'form-control bg-light', 'placeholder': 'Confirm password'}),
         label="Confirm Password",
         min_length=6
     )
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name', 'password']
+        fields = ['first_name', 'last_name', 'email', 'username', 'password']
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Choose username'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Enter email address'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First name'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control bg-light', 'placeholder': 'First name'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control bg-light', 'placeholder': 'Last name'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control bg-light', 'placeholder': 'Enter email address'}),
+            'username': forms.TextInput(attrs={'class': 'form-control bg-light', 'placeholder': 'Choose username'}),
         }
 
     def clean(self):
@@ -42,6 +43,26 @@ class UserProfileForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
         }
+
+
+class UserPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['old_password'].widget.attrs.update({
+            'class': 'form-control bg-light',
+            'placeholder': 'Enter your current password',
+            'autocomplete': 'current-password'
+        })
+        self.fields['new_password1'].widget.attrs.update({
+            'class': 'form-control bg-light',
+            'placeholder': 'Enter your new password',
+            'autocomplete': 'new-password'
+        })
+        self.fields['new_password2'].widget.attrs.update({
+            'class': 'form-control bg-light',
+            'placeholder': 'Confirm your new password',
+            'autocomplete': 'new-password'
+        })
 
 
 class AdoptionRequestForm(forms.ModelForm):
