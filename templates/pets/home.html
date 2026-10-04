@@ -19,12 +19,12 @@
                 </p>
 
                 <!-- Quick Search Bar inside Hero -->
-                <form action="{% url 'pet_list' %}" method="get" class="bg-white p-2 rounded-3 shadow-sm d-flex flex-column flex-sm-row gap-2">
+                <form action="{% url 'pet_list' %}" method="get" class="hero-search-form p-2 rounded-3 shadow-sm d-flex flex-column flex-sm-row gap-2">
                     <div class="input-group">
-                        <span class="input-group-text bg-transparent border-0 text-muted">
+                        <span class="input-group-text border-0 text-muted ps-2">
                             <i class="bi bi-search"></i>
                         </span>
-                        <input type="text" name="search" class="form-control border-0 shadow-none ps-0" placeholder="Search by name, breed, location...">
+                        <input type="text" name="search" class="form-control border-0 shadow-none ps-0" placeholder="Search by name, breed, location..." autocomplete="off">
                     </div>
                     <select name="animal_type" class="form-select border-0 shadow-none text-muted" style="max-width: 160px;">
                         <option value="">All Animals</option>
