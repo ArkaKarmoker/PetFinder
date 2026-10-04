@@ -622,3 +622,120 @@ footer a:hover {
         font-size: 2rem;
     }
 }
+
+/* ==========================================================================
+   Modern Pagination Component
+   ========================================================================== */
+.modern-pagination {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    background: #ffffff;
+    border: 1.5px solid rgba(226, 232, 240, 0.9);
+    border-radius: 9999px;
+    box-shadow: 0 4px 20px -3px rgba(15, 23, 42, 0.08), 0 2px 6px -2px rgba(15, 23, 42, 0.04);
+}
+
+.modern-pagination .page-item {
+    margin: 0;
+    list-style: none;
+}
+
+.modern-pagination .page-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--slate-700);
+    background-color: transparent;
+    border: 1.5px solid transparent;
+    border-radius: 9999px !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration: none;
+    line-height: 1;
+}
+
+.modern-pagination .page-link.page-num {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+}
+
+.modern-pagination .page-link.nav-btn {
+    height: 40px;
+    padding: 0 1.15rem;
+}
+
+.modern-pagination .page-item:not(.active):not(.disabled) .page-link:hover {
+    color: var(--primary-color) !important;
+    background-color: var(--primary-light) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+}
+
+.modern-pagination .page-item.active .page-link {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%) !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.38) !important;
+    cursor: default;
+}
+
+.modern-pagination .page-item.disabled .page-link {
+    color: var(--slate-400) !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* ==========================================================================
+   Pet Filter Grid
+   ========================================================================== */
+.pet-filter-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+}
+
+.pet-filter-grid .form-control,
+.pet-filter-grid .form-select {
+    font-size: 0.9rem;
+    padding: 0.55rem 0.75rem;
+}
+
+.pet-filter-grid .form-select {
+    padding-right: 1.85rem;
+}
+
+@media (min-width: 576px) {
+    .pet-filter-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .filter-item-keyword {
+        grid-column: span 2;
+    }
+}
+
+@media (min-width: 768px) {
+    .pet-filter-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .filter-item-keyword {
+        grid-column: span 1;
+    }
+}
+
+@media (min-width: 992px) {
+    .pet-filter-grid {
+        grid-template-columns: 2.3fr 1.05fr 1.25fr 0.95fr 1.05fr 0.95fr;
+        gap: 0.75rem;
+        align-items: start;
+    }
+    .filter-item-keyword {
+        grid-column: span 1;
+    }
+}

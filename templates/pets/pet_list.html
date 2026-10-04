@@ -22,19 +22,19 @@
     <!-- Search & Filter Card -->
     <div class="card border-0 bg-white rounded-4 shadow-sm p-3 p-md-4 mb-4">
         <form method="get" action="{% url 'pet_list' %}">
-            <div class="row g-3">
+            <div class="pet-filter-grid">
                 <!-- Search Keyword -->
-                <div class="col-12 col-md-4">
-                    <label class="form-label small fw-semibold text-muted mb-1">Keyword Search</label>
+                <div class="filter-item-keyword">
+                    <label class="form-label small fw-semibold text-muted mb-1 text-nowrap">Keyword Search</label>
                     <div class="input-group">
-                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                        <span class="input-group-text bg-light border-end-0 text-muted px-2"><i class="bi bi-search"></i></span>
                         <input type="text" name="search" value="{{ search_query }}" class="form-control border-start-0 bg-light" placeholder="Pet name, breed, keywords...">
                     </div>
                 </div>
 
                 <!-- Animal Type -->
-                <div class="col-6 col-md-2">
-                    <label class="form-label small fw-semibold text-muted mb-1">Animal Type</label>
+                <div class="filter-item-type">
+                    <label class="form-label small fw-semibold text-muted mb-1 text-nowrap">Animal Type</label>
                     <select name="animal_type" class="form-select bg-light">
                         <option value="">All Types</option>
                         {% for choice_val, choice_label in animal_types %}
@@ -44,8 +44,8 @@
                 </div>
 
                 <!-- Breed Filter -->
-                <div class="col-6 col-md-2">
-                    <label class="form-label small fw-semibold text-muted mb-1">Breed</label>
+                <div class="filter-item-breed">
+                    <label class="form-label small fw-semibold text-muted mb-1 text-nowrap">Breed</label>
                     <input type="text" name="breed" list="breedList" value="{{ breed }}" class="form-control bg-light" placeholder="All Breeds">
                     <datalist id="breedList">
                         {% for b in breeds %}
@@ -55,8 +55,8 @@
                 </div>
 
                 <!-- Gender -->
-                <div class="col-6 col-md-2">
-                    <label class="form-label small fw-semibold text-muted mb-1">Gender</label>
+                <div class="filter-item-gender">
+                    <label class="form-label small fw-semibold text-muted mb-1 text-nowrap">Gender</label>
                     <select name="gender" class="form-select bg-light">
                         <option value="">Any Gender</option>
                         <option value="Male" {% if gender == 'Male' %}selected{% endif %}>Male</option>
@@ -65,8 +65,8 @@
                 </div>
 
                 <!-- Location -->
-                <div class="col-6 col-md-2">
-                    <label class="form-label small fw-semibold text-muted mb-1">Location</label>
+                <div class="filter-item-location">
+                    <label class="form-label small fw-semibold text-muted mb-1 text-nowrap">Location</label>
                     <select name="location" class="form-select bg-light">
                         <option value="">All Locations</option>
                         {% for loc in locations %}
@@ -76,24 +76,24 @@
                 </div>
 
                 <!-- Adoption Status -->
-                <div class="col-6 col-md-2">
-                    <label class="form-label small fw-semibold text-muted mb-1">Status</label>
+                <div class="filter-item-status">
+                    <label class="form-label small fw-semibold text-muted mb-1 text-nowrap">Status</label>
                     <select name="status" class="form-select bg-light">
                         <option value="">All Statuses</option>
                         <option value="Available" {% if status == 'Available' %}selected{% endif %}>Available</option>
                         <option value="Adopted" {% if status == 'Adopted' %}selected{% endif %}>Adopted</option>
                     </select>
                 </div>
+            </div>
 
-                <!-- Action Buttons -->
-                <div class="col-12 d-flex justify-content-end gap-2 pt-2 border-top">
-                    <a href="{% url 'pet_list' %}" class="btn btn-outline-secondary px-3 btn-sm rounded-pill">
-                        <i class="bi bi-x-circle me-1"></i> Reset Filters
-                    </a>
-                    <button type="submit" class="btn btn-primary px-4 btn-sm rounded-pill">
-                        <i class="bi bi-funnel me-1"></i> Apply Filters
-                    </button>
-                </div>
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-end gap-2 pt-3 mt-3 border-top">
+                <a href="{% url 'pet_list' %}" class="btn btn-outline-secondary px-3 btn-sm rounded-pill">
+                    <i class="bi bi-x-circle me-1"></i> Reset Filters
+                </a>
+                <button type="submit" class="btn btn-primary px-4 btn-sm rounded-pill">
+                    <i class="bi bi-funnel me-1"></i> Apply Filters
+                </button>
             </div>
         </form>
     </div>
@@ -174,38 +174,42 @@
 
     <!-- Pagination -->
     {% if page_obj.has_other_pages %}
-    <nav aria-label="Pet pagination" class="d-flex justify-content-center mb-5">
-        <ul class="pagination pagination-rounded shadow-sm">
+    <nav aria-label="Pet pagination" class="d-flex justify-content-center align-items-center my-5">
+        <ul class="pagination modern-pagination mb-0">
             {% if page_obj.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}{% if animal_type %}&animal_type={{ animal_type }}{% endif %}{% if breed %}&breed={{ breed }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if location %}&location={{ location }}{% endif %}{% if status %}&status={{ status }}{% endif %}">First</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if animal_type %}&animal_type={{ animal_type }}{% endif %}{% if breed %}&breed={{ breed }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if location %}&location={{ location }}{% endif %}{% if status %}&status={{ status }}{% endif %}">Previous</a>
+                    <a class="page-link nav-btn" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if animal_type %}&animal_type={{ animal_type }}{% endif %}{% if breed %}&breed={{ breed }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if location %}&location={{ location }}{% endif %}{% if status %}&status={{ status }}{% endif %}" aria-label="Previous">
+                        <i class="bi bi-chevron-left me-1"></i> Previous
+                    </a>
                 </li>
             {% else %}
-                <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                <li class="page-item disabled">
+                    <span class="page-link nav-btn"><i class="bi bi-chevron-left me-1"></i> Previous</span>
+                </li>
             {% endif %}
 
             {% for num in page_obj.paginator.page_range %}
                 {% if page_obj.number == num %}
-                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link page-num">{{ num }}</span>
+                    </li>
                 {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}{% if animal_type %}&animal_type={{ animal_type }}{% endif %}{% if breed %}&breed={{ breed }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if location %}&location={{ location }}{% endif %}{% if status %}&status={{ status }}{% endif %}">{{ num }}</a>
+                        <a class="page-link page-num" href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}{% if animal_type %}&animal_type={{ animal_type }}{% endif %}{% if breed %}&breed={{ breed }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if location %}&location={{ location }}{% endif %}{% if status %}&status={{ status }}{% endif %}">{{ num }}</a>
                     </li>
                 {% endif %}
             {% endfor %}
 
             {% if page_obj.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if animal_type %}&animal_type={{ animal_type }}{% endif %}{% if breed %}&breed={{ breed }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if location %}&location={{ location }}{% endif %}{% if status %}&status={{ status }}{% endif %}">Next</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}{% if animal_type %}&animal_type={{ animal_type }}{% endif %}{% if breed %}&breed={{ breed }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if location %}&location={{ location }}{% endif %}{% if status %}&status={{ status }}{% endif %}">Last</a>
+                    <a class="page-link nav-btn" href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if animal_type %}&animal_type={{ animal_type }}{% endif %}{% if breed %}&breed={{ breed }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if location %}&location={{ location }}{% endif %}{% if status %}&status={{ status }}{% endif %}" aria-label="Next">
+                        Next <i class="bi bi-chevron-right ms-1"></i>
+                    </a>
                 </li>
             {% else %}
-                <li class="page-item disabled"><span class="page-link">Next</span></li>
+                <li class="page-item disabled">
+                    <span class="page-link nav-btn">Next <i class="bi bi-chevron-right ms-1"></i></span>
+                </li>
             {% endif %}
         </ul>
     </nav>
