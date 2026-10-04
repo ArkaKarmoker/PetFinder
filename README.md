@@ -52,6 +52,18 @@ The project is structured according to clean architecture principles with both a
 
 ## 🌐 REST API Documentation
 
+### Interactive Swagger & OpenAPI Documentation
+
+PetFinder features fully interactive Swagger UI and ReDoc documentation generated dynamically via OpenAPI 3.0 (`drf-spectacular`):
+
+| Documentation Tool | Endpoint | Description |
+|---|---|---|
+| **Swagger UI** | [`/api/docs/`](http://127.0.0.1:8000/api/docs/) | Interactive API explorer to test all endpoints directly with Bearer JWT tokens |
+| **ReDoc** | [`/api/redoc/`](http://127.0.0.1:8000/api/redoc/) | Modern, clean three-panel API reference specification |
+| **OpenAPI 3.0 Schema** | [`/api/schema/`](http://127.0.0.1:8000/api/schema/) | Raw JSON/YAML OpenAPI specification file |
+
+---
+
 ### Authentication Endpoints (JWT)
 
 | Method | Endpoint | Description |
@@ -168,7 +180,7 @@ Run the complete test suite:
 ```bash
 python manage.py test
 ```
-All 20 test cases will execute and verify model integrity, business rules, template views, and DRF JWT API endpoints.
+All 22 test cases will execute and verify model integrity, business rules, template views, breed filtering, and Swagger OpenAPI REST endpoints.
 
 ---
 

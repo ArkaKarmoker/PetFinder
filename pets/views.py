@@ -176,9 +176,17 @@ def apply_adoption(request, pk):
 def user_dashboard(request):
     adoption_requests = AdoptionRequest.objects.filter(user=request.user).select_related('pet')
     favorites = Favorite.objects.filter(user=request.user).select_related('pet')
+    total_requests = adoption_requests.count()
+    pending_count = adoption_requests.filter(status='Pending').count()
+    approved_count = adoption_requests.filter(status='Approved').count()
+    favorites_count = favorites.count()
     context = {
         'adoption_requests': adoption_requests,
         'favorites': favorites,
+        'total_requests': total_requests,
+        'pending_count': pending_count,
+        'approved_count': approved_count,
+        'favorites_count': favorites_count,
     }
     return render(request, 'pets/dashboard.html', context)
 

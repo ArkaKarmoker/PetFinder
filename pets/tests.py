@@ -419,3 +419,41 @@ class AdminActionTests(TestCase):
         self.pet.refresh_from_db()
         self.assertEqual(self.pet.status, 'Adopted')
 
+
+class SwaggerAndFilterTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.pet = Pet.objects.create(
+            name="Rocky",
+            animal_type="Dog",
+            breed="Husky",
+            age=2,
+            gender="Male",
+            location="Sylhet",
+            description="Active husky dog.",
+            status="Available"
+        )
+
+    def test_swagger_and_schema_endpoints(self):
+        # OpenAPI JSON schema endpoint
+        schema_res = self.client.get(reverse('schema'))
+        self.assertEqual(schema_res.status_code, 200)
+
+        # Swagger UI HTML view
+        swagger_res = self.client.get(reverse('swagger-ui'))
+        self.assertEqual(swagger_res.status_code, 200)
+        self.assertContains(swagger_res, "swagger-ui")
+
+        # ReDoc HTML view
+        redoc_res = self.client.get(reverse('redoc'))
+        self.assertEqual(redoc_res.status_code, 200)
+
+    def test_breed_filter(self):
+        response = self.client.get(reverse('pet_list'), {'breed': 'Husky'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Rocky")
+
+        empty_res = self.client.get(reverse('pet_list'), {'breed': 'Poodle'})
+        self.assertEqual(empty_res.status_code, 200)
+        self.assertNotContains(empty_res, "Rocky")
+

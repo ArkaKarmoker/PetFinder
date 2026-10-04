@@ -45,12 +45,16 @@ class PetAdmin(admin.ModelAdmin):
 
 @admin.register(AdoptionRequest)
 class AdoptionRequestAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'pet', 'phone', 'previous_pet_experience', 'status', 'created_at')
+    list_display = ('id', 'user', 'pet', 'phone', 'short_reason', 'previous_pet_experience', 'status', 'created_at')
     list_filter = ('status', 'previous_pet_experience', 'created_at')
     search_fields = ('user__username', 'user__email', 'pet__name', 'phone', 'address', 'reason')
     list_editable = ('status',)
     readonly_fields = ('created_at', 'updated_at')
     ordering = ('-created_at',)
+
+    @admin.display(description="Reason")
+    def short_reason(self, obj):
+        return (obj.reason[:40] + '...') if len(obj.reason) > 40 else obj.reason
     fieldsets = (
         ("Application Overview", {
             'fields': ('user', 'pet', 'status')

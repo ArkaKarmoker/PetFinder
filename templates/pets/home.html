@@ -40,24 +40,24 @@
                 </form>
             </div>
             <div class="col-lg-5 text-center d-none d-lg-block">
-                <div class="bg-white bg-opacity-10 p-4 rounded-4 backdrop-blur border border-white border-opacity-25 text-white">
+                <div class="hero-stats-card text-white">
                     <div class="row g-3">
                         <div class="col-6">
-                            <div class="p-3 bg-white bg-opacity-15 rounded-3">
-                                <div class="fs-2 fw-bold">{{ total_pets }}</div>
-                                <div class="small text-white-50">Total Rescued</div>
+                            <div class="hero-stat-box">
+                                <div class="hero-stat-number text-white">{{ total_pets }}</div>
+                                <div class="hero-stat-label">Total Rescued</div>
                             </div>
                         </div>
                         <div class="col-6">
-                            <div class="p-3 bg-white bg-opacity-15 rounded-3">
-                                <div class="fs-2 fw-bold text-warning">{{ total_available }}</div>
-                                <div class="small text-white-50">Looking For Homes</div>
+                            <div class="hero-stat-box">
+                                <div class="hero-stat-number text-warning">{{ total_available }}</div>
+                                <div class="hero-stat-label">Looking For Homes</div>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="p-3 bg-white bg-opacity-15 rounded-3">
-                                <div class="fs-2 fw-bold text-success">{{ total_adopted }}</div>
-                                <div class="small text-white-50">Happily Adopted</div>
+                            <div class="hero-stat-box">
+                                <div class="hero-stat-number text-success">{{ total_adopted }}</div>
+                                <div class="hero-stat-label">Happily Adopted</div>
                             </div>
                         </div>
                     </div>
@@ -76,14 +76,10 @@
             {% for cat in categories %}
             <div class="col">
                 <a href="{% url 'pet_list' %}?animal_type={{ cat.type }}" class="category-card">
-                    <span class="category-icon text-primary">
-                        {% if cat.type == 'Dog' %}<i class="bi bi-shield-dog"></i>
-                        {% elif cat.type == 'Cat' %}<i class="bi bi-emoji-smile"></i>
-                        {% elif cat.type == 'Bird' %}<i class="bi bi-feather"></i>
-                        {% elif cat.type == 'Rabbit' %}<i class="bi bi-balloon-heart"></i>
-                        {% else %}<i class="bi bi-heart"></i>{% endif %}
+                    <span class="category-emoji mb-2 d-inline-block fs-1">
+                        {% if cat.type == 'Dog' %}🐶{% elif cat.type == 'Cat' %}🐱{% elif cat.type == 'Bird' %}🦜{% elif cat.type == 'Rabbit' %}🐰{% else %}🐾{% endif %}
                     </span>
-                    <h6 class="fw-bold mb-1">{{ cat.type }}s</h6>
+                    <h6 class="fw-bold mb-1 text-dark">{{ cat.type }}s</h6>
                     <span class="badge bg-light text-muted border">{{ cat.count }} available</span>
                 </a>
             </div>

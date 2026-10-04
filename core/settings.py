@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'django_filters',
+    'drf_spectacular',
     # Local apps
     'pets',
 ]
@@ -159,6 +160,22 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# DRF Spectacular (Swagger / OpenAPI 3) settings
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'PetFinder REST API',
+    'DESCRIPTION': 'Comprehensive REST API documentation for the PetFinder Pet Adoption & Rescue Platform. Includes authentication, pet catalog, search & filtering, adoption requests, and user favorites.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'TAGS': [
+        {'name': 'Authentication', 'description': 'JWT tokens & registration endpoints'},
+        {'name': 'Pets', 'description': 'Pet management, browsing, searching and filtering'},
+        {'name': 'Adoptions', 'description': 'Pet adoption application management'},
+        {'name': 'Favorites', 'description': 'User saved/favorite pet bookmarks'},
     ],
 }
 

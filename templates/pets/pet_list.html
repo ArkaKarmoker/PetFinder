@@ -43,6 +43,17 @@
                     </select>
                 </div>
 
+                <!-- Breed Filter -->
+                <div class="col-6 col-md-2">
+                    <label class="form-label small fw-semibold text-muted mb-1">Breed</label>
+                    <input type="text" name="breed" list="breedList" value="{{ breed }}" class="form-control bg-light" placeholder="All Breeds">
+                    <datalist id="breedList">
+                        {% for b in breeds %}
+                            <option value="{{ b }}"></option>
+                        {% endfor %}
+                    </datalist>
+                </div>
+
                 <!-- Gender -->
                 <div class="col-6 col-md-2">
                     <label class="form-label small fw-semibold text-muted mb-1">Gender</label>

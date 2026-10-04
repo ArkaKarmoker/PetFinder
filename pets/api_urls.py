@@ -3,6 +3,11 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
 from . import api_views
 
 urlpatterns = [
@@ -23,4 +28,9 @@ urlpatterns = [
     # Favorites API Endpoints (Bonus)
     path('favorites/', api_views.FavoriteListCreateAPIView.as_view(), name='api_favorite_list_create'),
     path('favorites/<int:pk>/', api_views.FavoriteDestroyAPIView.as_view(), name='api_favorite_detail'),
+
+    # Swagger / OpenAPI Documentation Endpoints
+    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]

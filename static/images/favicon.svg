@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="32" height="32" fill="none">
+  <defs>
+    <linearGradient id="favBadgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="50%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="favHeartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff4365"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
+    </linearGradient>
+  </defs>
+  
+  <rect width="48" height="48" rx="14" fill="url(#favBadgeGrad)"/>
+  
+  <g>
+    <ellipse cx="14" cy="19" rx="3.2" ry="4.8" transform="rotate(-26 14 19)" fill="#ffffff"/>
+    <ellipse cx="20.5" cy="13.5" rx="3.5" ry="5.2" transform="rotate(-8 20.5 13.5)" fill="#ffffff"/>
+    <ellipse cx="27.5" cy="13.5" rx="3.5" ry="5.2" transform="rotate(8 27.5 13.5)" fill="#ffffff"/>
+    <ellipse cx="34" cy="19" rx="3.2" ry="4.8" transform="rotate(26 34 19)" fill="#ffffff"/>
+
+    <path d="M16 28 C14 24.5 17 21 21 22.5 C22.8 23.3 25.2 23.3 27 22.5 C31 21 34 24.5 32 28 C29.5 32 30 35 28 37 C25.8 39.2 22.2 39.2 20 37 C18 35 18.5 32 16 28 Z" fill="#ffffff"/>
+    <path d="M24 27.2 C22.8 25.5 20.2 26 19.5 27.8 C18.8 29.8 20.5 31.8 24 34.5 C27.5 31.8 29.2 29.8 28.5 27.8 C27.8 26 25.2 25.5 24 27.2 Z" fill="url(#favHeartGrad)"/>
+  </g>
+</svg>

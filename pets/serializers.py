@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from drf_spectacular.utils import extend_schema_field
 from .models import Pet, AdoptionRequest, Favorite
 
 
@@ -37,8 +38,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 
 class PetSerializer(serializers.ModelSerializer):
-    age_display = serializers.ReadOnlyField()
-    is_available = serializers.ReadOnlyField()
+    age_display = serializers.CharField(read_only=True)
+    is_available = serializers.BooleanField(read_only=True)
     image_url = serializers.SerializerMethodField()
 
     class Meta:
@@ -50,6 +51,7 @@ class PetSerializer(serializers.ModelSerializer):
         )
         read_only_fields = ('id', 'created_at', 'updated_at')
 
+    @extend_schema_field(serializers.CharField(allow_null=True))
     def get_image_url(self, obj):
         if obj.image:
             request = self.context.get('request')
@@ -71,7 +73,15 @@ class AdoptionRequestSerializer(serializers.ModelSerializer):
             'phone', 'address', 'reason', 'previous_pet_experience',
             'message', 'status', 'created_at', 'updated_at'
         )
-        read_only_fields = ('id', 'user', 'status', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'user', 'created_at', 'updated_at')
+
+    def get_fields(self):
+        fields = super().get_fields()
+        request = self.context.get('request')
+        # Only staff users can modify the adoption status via API
+        if not (request and hasattr(request, 'user') and request.user.is_staff):
+            fields['status'].read_only = True
+        return fields
 
     def validate_pet(self, value):
         # Rule 1: Only available pets can be adopted

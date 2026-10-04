@@ -1,88 +1,254 @@
-/* PetFinder Modern Custom Styles */
+/* ==========================================================================
+   PetFinder - Premium Modern Design System
+   Google Fonts: Plus Jakarta Sans & Outfit
+   ========================================================================== */
+
 :root {
-    --primary-color: #2563eb;
-    --primary-hover: #1d4ed8;
+    --primary-color: #3b82f6;
+    --primary-hover: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #eff6ff;
     --accent-color: #ec4899;
+    --accent-hover: #db2777;
     --success-color: #10b981;
+    --success-light: #ecfdf5;
     --warning-color: #f59e0b;
+    --warning-light: #fffbeb;
     --danger-color: #ef4444;
-    --dark-color: #1e293b;
+    --danger-light: #fef2f2;
+    --dark-color: #0f172a;
+    --slate-800: #1e293b;
+    --slate-700: #334155;
+    --slate-600: #475569;
+    --slate-400: #94a3b8;
     --light-bg: #f8fafc;
-    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-    --card-hover-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.12), 0 4px 6px -4px rgba(0, 0, 0, 0.08);
+    --card-border: rgba(226, 232, 240, 0.8);
+    --card-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.06), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+    --card-hover-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+    --radius-lg: 1.25rem;
+    --radius-md: 0.875rem;
+    --radius-sm: 0.5rem;
 }
 
 body {
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     background-color: var(--light-bg);
-    color: #334155;
+    color: var(--slate-700);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6, .brand-title {
+    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    color: var(--dark-color);
 }
 
 main {
     flex: 1 0 auto;
 }
 
-/* Navbar */
-.navbar-brand {
-    font-weight: 700;
-    font-size: 1.4rem;
-    letter-spacing: -0.5px;
-    color: var(--primary-color) !important;
+/* ==========================================================================
+   Modern Navbar
+   ========================================================================== */
+.modern-navbar {
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.75) !important;
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.03);
+    transition: all 0.3s ease;
+}
+
+.brand-logo-img {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    filter: drop-shadow(0 3px 6px rgba(37, 99, 235, 0.22));
+}
+
+.navbar-brand:hover .brand-logo-img {
+    transform: scale(1.1) rotate(-4deg);
+}
+
+.brand-title {
+    font-size: 1.45rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #1d4ed8 0%, #4338ca 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.03em;
+}
+
+.modern-navbar .navbar-nav {
+    gap: 0.5rem;
 }
 
 .nav-link {
-    font-weight: 500;
-    color: #475569;
-    transition: color 0.2s ease-in-out;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--slate-600) !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 2rem;
+    transition: all 0.2s ease;
 }
 
 .nav-link:hover, .nav-link.active {
     color: var(--primary-color) !important;
+    background-color: var(--primary-light);
 }
 
-/* Hero Section */
+.api-nav-link {
+    background: rgba(239, 246, 255, 0.7);
+    border: 1px solid rgba(191, 219, 254, 0.6);
+}
+
+.api-nav-link:hover {
+    background: var(--primary-light) !important;
+    border-color: var(--primary-color);
+}
+
+.user-menu-btn {
+    background-color: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    color: var(--slate-700);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+}
+
+.user-menu-btn:hover,
+.user-menu-btn:focus,
+.user-menu-btn.show,
+.user-menu-btn[aria-expanded="true"] {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%) !important;
+    border-color: var(--primary-hover) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+    transform: translateY(-1px);
+}
+
+.user-menu-btn:hover i,
+.user-menu-btn:focus i,
+.user-menu-btn.show i,
+.user-menu-btn[aria-expanded="true"] i {
+    color: #ffffff !important;
+}
+
+/* ==========================================================================
+   Hero Banner Section
+   ========================================================================== */
 .hero-banner {
-    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 45%, #1d4ed8 100%);
     color: #ffffff;
-    border-radius: 1.25rem;
-    padding: 3.5rem 2rem;
+    border-radius: var(--radius-lg);
+    padding: 4rem 2.5rem;
     position: relative;
     overflow: hidden;
-    margin-bottom: 2.5rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 20px 40px -15px rgba(29, 78, 216, 0.35);
+}
+
+.hero-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.hero-banner::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.18) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .hero-banner h1 {
+    color: #ffffff;
     font-weight: 800;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
 }
 
-/* Cards */
+.hero-stats-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.hero-stat-box {
+    background: rgba(15, 23, 42, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-md);
+    padding: 1.15rem 1rem;
+    text-align: center;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.hero-stat-box:hover {
+    transform: translateY(-2px);
+    background: rgba(15, 23, 42, 0.7);
+}
+
+.hero-stat-number {
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    font-family: 'Outfit', sans-serif;
+}
+
+.hero-stat-label {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 0.35rem;
+}
+
+/* ==========================================================================
+   Cards & Layouts
+   ========================================================================== */
 .pet-card {
-    border: none;
-    border-radius: 1rem;
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
     background: #ffffff;
     box-shadow: var(--card-shadow);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     height: 100%;
+    position: relative;
 }
 
 .pet-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
     box-shadow: var(--card-hover-shadow);
+    border-color: rgba(59, 130, 246, 0.35);
 }
 
 .pet-card-img-wrapper {
     position: relative;
     width: 100%;
-    padding-top: 65%;
+    padding-top: 66%;
     overflow: hidden;
-    background-color: #e2e8f0;
+    background-color: #f1f5f9;
 }
 
 .pet-card-img-wrapper img {
@@ -92,137 +258,331 @@ main {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .pet-card:hover .pet-card-img-wrapper img {
-    transform: scale(1.04);
+    transform: scale(1.06);
 }
 
 .pet-badge-status {
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: 14px;
+    left: 14px;
     z-index: 2;
-    font-weight: 600;
-    padding: 0.35rem 0.75rem;
+    font-weight: 700;
+    padding: 0.4rem 0.85rem;
     border-radius: 2rem;
-    font-size: 0.8rem;
-    backdrop-filter: blur(4px);
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .pet-fav-btn {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: 14px;
+    right: 14px;
     z-index: 2;
-    background: rgba(255, 255, 255, 0.9);
-    border: none;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    backdrop-filter: blur(8px);
     border-radius: 50%;
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #ef4444;
-    transition: transform 0.2s ease, background-color 0.2s ease;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
 .pet-fav-btn:hover {
     transform: scale(1.15);
     background: #ffffff;
+    box-shadow: 0 6px 15px rgba(239, 68, 68, 0.25);
 }
 
-/* Category Pills */
+/* ==========================================================================
+   Pulsing Live Status Badges
+   ========================================================================== */
+.badge-available {
+    background-color: #ecfdf5 !important;
+    color: #065f46 !important;
+    border: 1px solid #a7f3d0;
+    display: inline-flex;
+    align-items: center;
+}
+
+.badge-available::before {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10b981;
+    margin-right: 6px;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    animation: live-pulse-green 2s infinite;
+}
+
+@keyframes live-pulse-green {
+    0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 7px rgba(16, 185, 129, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+.badge-adopted {
+    background-color: #fef2f2 !important;
+    color: #991b1b !important;
+    border: 1px solid #fecaca;
+    display: inline-flex;
+    align-items: center;
+}
+
+.badge-adopted::before {
+    content: '✓';
+    display: inline-block;
+    font-weight: 800;
+    margin-right: 5px;
+    font-size: 0.75rem;
+}
+
+.badge-pending {
+    background-color: #fffbeb !important;
+    color: #92400e !important;
+    border: 1px solid #fde68a;
+    display: inline-flex;
+    align-items: center;
+}
+
+.badge-pending::before {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #f59e0b;
+    margin-right: 6px;
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+    animation: live-pulse-amber 2s infinite;
+}
+
+@keyframes live-pulse-amber {
+    0% {
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 7px rgba(245, 158, 11, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+    }
+}
+
+.badge-approved {
+    background-color: #d1fae5 !important;
+    color: #065f46 !important;
+    border: 1px solid #6ee7b7;
+}
+
+.badge-rejected {
+    background-color: #fee2e2 !important;
+    color: #991b1b !important;
+    border: 1px solid #fca5a5;
+}
+
+/* ==========================================================================
+   Category Cards
+   ========================================================================== */
 .category-card {
     background: #ffffff;
-    border-radius: 1rem;
-    padding: 1.25rem 1rem;
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem 1rem;
     text-align: center;
     box-shadow: var(--card-shadow);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
     text-decoration: none;
     color: inherit;
     display: block;
 }
 
 .category-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-4px);
     box-shadow: var(--card-hover-shadow);
+    border-color: var(--primary-color);
     color: var(--primary-color);
 }
 
 .category-icon {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+    font-size: 2.2rem;
+    margin-bottom: 0.6rem;
     display: block;
+    transition: transform 0.2s ease;
 }
 
-/* Status Badges */
-.badge-available {
-    background-color: #dcfce7;
-    color: #166534;
+.category-card:hover .category-icon {
+    transform: scale(1.12);
 }
 
-.badge-adopted {
-    background-color: #fee2e2;
-    color: #991b1b;
+/* ==========================================================================
+   Buttons & Interactive Elements
+   ========================================================================== */
+.btn {
+    font-weight: 600;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    letter-spacing: -0.01em;
 }
 
-.badge-pending {
-    background-color: #fef3c7;
-    color: #92400e;
-}
-
-.badge-approved {
-    background-color: #d1fae5;
-    color: #065f46;
-}
-
-.badge-rejected {
-    background-color: #fee2e2;
-    color: #991b1b;
-}
-
-/* Buttons */
 .btn-primary {
-    background-color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
     border-color: var(--primary-color);
-    font-weight: 500;
-    border-radius: 0.5rem;
-    padding: 0.5rem 1.25rem;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
 .btn-primary:hover {
-    background-color: var(--primary-hover);
-    border-color: var(--primary-hover);
+    background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-dark) 100%);
+    border-color: var(--primary-dark);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+    transform: translateY(-1px);
 }
 
-/* Footer */
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: rgba(37, 99, 235, 0.5);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+/* Form Controls */
+.form-control, .form-select {
+    border-radius: var(--radius-sm);
+    border: 1px solid #cbd5e1;
+    font-size: 0.95rem;
+    padding: 0.6rem 0.85rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+}
+
+/* ==========================================================================
+   Pagination Styling
+   ========================================================================== */
+.pagination-rounded .page-item .page-link {
+    border-radius: 50%;
+    margin: 0 3px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: var(--slate-700);
+    border: 1px solid var(--card-border);
+}
+
+.pagination-rounded .page-item.active .page-link {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+    border-color: var(--primary-color);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+/* Dashboard Nav Pills */
+.nav-pills .nav-link {
+    font-weight: 600;
+    color: var(--slate-600);
+    transition: all 0.2s ease;
+}
+
+.nav-pills .nav-link.active {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+}
+
+.nav-pills .nav-link.active .badge {
+    background-color: #ffffff !important;
+    color: var(--primary-color) !important;
+}
+
+/* ==========================================================================
+   Dashboard & Tables
+   ========================================================================== */
+.stat-card {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--card-hover-shadow);
+}
+
+.stat-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+}
+
+.table > :not(caption) > * > * {
+    padding: 1rem 0.75rem;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
 footer {
     background: #0f172a;
     color: #94a3b8;
-    padding: 3rem 0 1.5rem;
-    margin-top: 4rem;
+    padding: 4rem 0 2rem;
+    margin-top: 5rem;
+    border-top: 1px solid #1e293b;
 }
 
 footer a {
     color: #cbd5e1;
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
 footer a:hover {
-    color: #ffffff;
+    color: #60a5fa;
+    transform: translateX(2px);
 }
 
-/* Mobile responsive adjustments */
+/* ==========================================================================
+   Responsive adjustments
+   ========================================================================== */
 @media (max-width: 768px) {
     .hero-banner {
-        padding: 2.25rem 1.25rem;
-        border-radius: 0.75rem;
+        padding: 2.5rem 1.25rem;
+        border-radius: var(--radius-md);
     }
     .hero-banner h1 {
-        font-size: 1.85rem;
+        font-size: 2rem;
     }
 }
